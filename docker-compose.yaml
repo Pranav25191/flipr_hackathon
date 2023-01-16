@@ -1,0 +1,32 @@
+version: '3.8'
+
+services: 
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes: 
+      - ./db/:/data/db
+  backend:
+    build: ./flipr_backend
+    image: flipr-backend-compose
+    depends_on:
+      - mongodb
+    ports:
+      - 4444:4444
+    stdin_open: true
+    tty: true
+    restart: on-failure
+  frontend:
+    build: ./flipr_frontend
+    image: flipr-frontend-compose
+    ports:
+      - 3000:3000
+    stdin_open: true
+
+volumes: 
+  db-config:
+  db-data:
+
+
